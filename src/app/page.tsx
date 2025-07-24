@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import ATM from "@/components/atm";
 
 export default function Home() {

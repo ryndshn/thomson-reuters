@@ -154,7 +154,7 @@ export default function ATM() {
       </div>
 
       {/* ATM Body Container */}
-      <div className="relative bg-gray-200 w-[420px] h-[700px] shadow-2xl">
+      <div className="relative bg-gray-200 w-[540px] h-[700px] shadow-2xl">
         {/* Credit Card Sprites */}
         <div className="px-6 pt-3 pb-6">
           <CreditCardSprites selectedCard={selectedCard} />
