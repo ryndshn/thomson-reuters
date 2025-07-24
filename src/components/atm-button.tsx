@@ -8,20 +8,20 @@ interface ATMButtonProps {
 export default function ATMButton({ position, label, onClick, disabled = false }: ATMButtonProps) {
   return (
     <div className="relative">
-      {/* Physical Button */}
+      {/* Physical Button - Larger size */}
       <button 
-        className="w-12 h-6 bg-gray-500 rounded-sm hover:bg-gray-600 shadow-inner border border-gray-600 disabled:opacity-50"
+        className="w-16 h-8 bg-gray-500 rounded-sm hover:bg-gray-600 shadow-inner border border-gray-600 disabled:opacity-50"
         onClick={onClick}
         disabled={disabled}
       />
       
-      {/* Label absolutely positioned into the screen area */}
+      {/* Label absolutely positioned into the screen area - positioned for lower half */}
       {label && (
         <div 
-          className={`absolute text-xs text-white font-mono whitespace-nowrap
+          className={`absolute text-sm text-white font-mono whitespace-nowrap
             ${position === "left" 
-              ? "left-full ml-4" // Position to the right of left button
-              : "right-full mr-4" // Position to the left of right button
+              ? "left-full ml-6" // More distance for larger layout
+              : "right-full mr-6" // More distance for larger layout
             }`}
           style={{
             top: "50%",
