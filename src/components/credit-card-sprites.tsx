@@ -14,7 +14,7 @@ export default function CreditCardSprites({ selectedCard }: CreditCardSpritesPro
         const imageSrc = isSelected ? cardConfig.enabled : cardConfig.disabled;
         
         return (
-          <div key={cardType} className="w-[40px] h-[25px] flex items-center justify-center">
+          <div key={cardType} className="w-[50px] h-[25px] flex items-center justify-center">
             <Image
               src={imageSrc}
               alt={`${cardConfig.name} card`}

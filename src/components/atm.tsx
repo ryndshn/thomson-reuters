@@ -140,16 +140,16 @@ export default function ATM() {
         <Image
           src="/atm_sign.png"
           alt="ATM Sign"
-          width={400}
+          width={600}
           height={80}
           className="rounded-lg"
         />
         <Image
           src="/graffiti.png"
           alt="Graffiti"
-          width={55}
+          width={300}
           height={38}
-          className="absolute top-1 right-5"
+          className="absolute top-10 right-5"
         />
       </div>
 
