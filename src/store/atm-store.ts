@@ -97,7 +97,7 @@ export const useATMStore = create<ATMStore>((set, get) => ({
         store.clearInput();
       }
     } catch (error) {
-      store.setError("Authentication failed. Please try again.");
+      store.setError(`Authentication failed. Please try again. ${error}`);
       store.clearInput();
     }
   },
@@ -165,7 +165,7 @@ export const useATMStore = create<ATMStore>((set, get) => ({
         }
       }
     } catch (error) {
-      store.setError("Transaction failed. Please try again.");
+      store.setError(`Transaction failed. Please try again. ${error}`);
     }
   },
 

@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ATM Machine Demo
 
-## Getting Started
+A functional ATM machine web application built with React, TypeScript, and Next.js that simulates real banking interactions.
 
-First, run the development server:
+## Setup & Run
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+# Install dependencies
+pnpm install
+
+# Start development server
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **PIN Authentication** - Enter a 4-digit PIN to access your account
+- **Balance Inquiry** - Check current account balance
+- **Cash Withdrawal** - Withdraw funds with balance validation
+- **Cash Deposit** - Deposit funds to your account
+- **Persistent Data** - Balances are saved using localStorage
+- **Card Type Display** - Shows correct card type after PIN entry
 
-## Learn More
+## Test PINs
 
-To learn more about Next.js, take a look at the following resources:
+- `1234` - Peter Parker (MasterCard) - $2,500.00
+- `5678` - Mary Jane (Visa) - $1,850.50
+- `9999` - Spider-Man (Star) - $10,000.00
+- `1111` - Ben Parker (Pulse) - $750.25
+- `2222` - May Parker (Maestro) - $3,200.00
+- `3333` - Gwen Stacy (Plus) - $925.75
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Implementation Details
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **State Management** - Zustand store with comprehensive state machine architecture
+- **API Layer** - Service layer simulating server requests with localStorage persistence
+- **Component Architecture** - Modular design with custom React hooks for logic separation
+- **User Experience** - Realistic transaction delays, loading states, and error handling
+- **Navigation Flow** - Turn-based interactions with exit/back functionality throughout
+- **Design Fidelity** - Closely matches provided mockups with authentic ATM styling
 
-## Deploy on Vercel
+## Browser Compatibility
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Optimized for modern browsers. Tested on Chrome.
