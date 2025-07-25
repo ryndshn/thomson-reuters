@@ -147,12 +147,23 @@ export default function ATMScreen({
       <div className="flex-1"></div>
       
       {/* Sticker Graffiti overlapping bottom-left of screen */}
-      <div className="absolute -bottom-6 -left-8 z-10">
+      <div className="absolute -bottom-10 -left-10 z-10">
         <Image
           src="/sticker_graf.png"
           alt="Sticker Graffiti"
-          width={90}
-          height={65}
+          width={150}
+          height={85}
+        />
+      </div>
+      
+      {/* SYSTEMS image - positioned underneath and right-aligned to screen */}
+      <div className="absolute -bottom-5 right-2">
+        <Image
+          src="/systems.png"
+          alt="Systems"
+          width={70}
+          height={30}
+          className="object-contain"
         />
       </div>
     </div>

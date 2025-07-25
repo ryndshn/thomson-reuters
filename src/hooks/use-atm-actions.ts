@@ -16,11 +16,11 @@ export function useATMActions() {
 
   const actions = {
     startPinEntry: () => {
-      transitionTo("pin-entry", "pin", 6);
+      transitionTo("pin-entry", "pin", 4);
     },
     
     enterPin: () => {
-      if (currentInput.length >= 4) {
+      if (currentInput.length === 4) {
         authenticateUser(currentInput);
       }
     },

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import CreditCardSprites from "./credit-card-sprites";
 import ATMHeader from "./atm-header";
 import ATMScreen from "./atm-screen";
@@ -107,10 +108,7 @@ export default function ATM() {
           </div>
         </div>
 
-        {/* SYSTEMS text */}
-        <div className="absolute bottom-4 right-8 text-sm text-gray-600 font-mono">
-          SYSTEMS
-        </div>
+
         
         {/* Numpad - only show when input is needed */}
         {inputType !== "none" && (
