@@ -1,5 +1,7 @@
 import { useATMStore } from '@/store/atm-store';
 
+export type ATMActions = ReturnType<typeof useATMActions>["actions"];
+
 export function useATMActions() {
   const {
     currentState,
@@ -33,7 +35,6 @@ export function useATMActions() {
       }
     },
     
-    backToMenu: () => transitionTo("main-menu"),
     exit: () => {
       // Go back to previous state based on current state
       if (currentState === "pin-entry") {

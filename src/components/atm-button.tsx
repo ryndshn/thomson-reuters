@@ -8,7 +8,6 @@ interface ATMButtonProps {
 export default function ATMButton({ position, label, onClick, disabled = false }: ATMButtonProps) {
   return (
     <div className="relative">
-      {/* Physical Button - Larger size */}
       <button 
         className="w-16 h-8 bg-gray-500 rounded-sm hover:bg-gray-600 shadow-inner border border-gray-600 disabled:opacity-50"
         onClick={onClick}

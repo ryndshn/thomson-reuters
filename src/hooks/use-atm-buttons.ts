@@ -1,4 +1,5 @@
 import { ATMState } from "@/lib/types";
+import { ATMActions } from "./use-atm-actions";
 
 interface ButtonConfig {
   label: string;
@@ -7,16 +8,7 @@ interface ButtonConfig {
 
 interface UseATMButtonsProps {
   currentState: ATMState;
-  actions: {
-    startPinEntry: () => void;
-    enterPin: () => void;
-    withdraw: () => void;
-    deposit: () => void;
-    balance: () => void;
-    processAmount: () => void;
-    backToMenu: () => void;
-    exit: () => void;
-  };
+  actions: ATMActions;
 }
 
 export function useATMButtons({
@@ -47,11 +39,6 @@ export function useATMButtons({
       buttons[3] = { label: "Enter PIN", action: actions.startPinEntry };
     } else if (currentState === "main-menu") {
       buttons[1] = { label: "Balance", action: actions.balance };
-      buttons[2] = { label: "Re-Enter PIN", action: actions.exit };
-    } else if (currentState === "balance-display" || currentState === "withdraw-complete" || currentState === "deposit-complete") {
-      buttons[3] = { label: "Back to Menu", action: actions.backToMenu };
-    } else if (currentState === "withdraw-amount" || currentState === "deposit-amount") {
-      buttons[3] = { label: "Process", action: actions.processAmount };
     }
     
     return buttons;

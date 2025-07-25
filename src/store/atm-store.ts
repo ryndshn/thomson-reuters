@@ -1,5 +1,6 @@
 import { create } from 'zustand';
-import { ATMState, ATMSession, UserAccount, InputType, CardType } from '@/lib/types';
+import { ATMState, ATMSession, InputType } from '@/lib/types';
+import { api } from '@/services/api';
 
 interface ATMStore extends ATMSession {
   // Actions
@@ -17,15 +18,10 @@ interface ATMStore extends ATMSession {
   reset: () => void;
 }
 
-// PIN to user mapping
-const PIN_TO_USER_MAP: Record<string, UserAccount> = {
-  "1234": { id: "1", name: "Peter Parker", cardType: "mastercard", balance: 2500.00 },
-  "5678": { id: "2", name: "Mary Jane", cardType: "visa", balance: 1850.50 },
-  "9999": { id: "3", name: "Spider-Man", cardType: "star", balance: 10000.00 },
-  "1111": { id: "4", name: "Ben Parker", cardType: "pulse", balance: 750.25 },
-  "2222": { id: "5", name: "May Parker", cardType: "maestro", balance: 3200.00 },
-  "3333": { id: "6", name: "Gwen Stacy", cardType: "plus", balance: 925.75 },
-};
+// Initialize API on module load
+if (typeof window !== 'undefined') {
+  api.initialize();
+}
 
 const initialState: ATMSession = {
   user: null,
@@ -80,20 +76,28 @@ export const useATMStore = create<ATMStore>((set, get) => ({
     });
   },
 
-  authenticateUser: (pin: string) => {
+  authenticateUser: async (pin: string) => {
     const store = get();
-    const user = PIN_TO_USER_MAP[pin];
+    store.setProcessing(true);
     
-    if (user) {
-      set({ 
-        user,
-        currentState: "main-menu",
-        inputType: "none",
-        currentInput: "",
-        error: null,
-      });
-    } else {
-      store.setError("Invalid PIN. Please try again.");
+    try {
+      const user = await api.authenticateUser(pin);
+      
+      if (user) {
+        set({ 
+          user,
+          currentState: "main-menu",
+          inputType: "none",
+          currentInput: "",
+          error: null,
+          isProcessing: false,
+        });
+      } else {
+        store.setError("Invalid PIN. Please try again.");
+        store.clearInput();
+      }
+    } catch (error) {
+      store.setError("Authentication failed. Please try again.");
       store.clearInput();
     }
   },
@@ -116,7 +120,7 @@ export const useATMStore = create<ATMStore>((set, get) => ({
     }
   },
 
-  processTransaction: (amount: string) => {
+  processTransaction: async (amount: string) => {
     const { currentState, user } = get();
     const store = get();
     const amountNum = parseFloat(amount);
@@ -128,31 +132,41 @@ export const useATMStore = create<ATMStore>((set, get) => ({
 
     store.setProcessing(true);
 
-    // Simulate processing delay
-    setTimeout(() => {
+    try {
       if (currentState === "withdraw-amount") {
-        if (amountNum > user.balance) {
-          store.setError("Insufficient funds");
-          store.setProcessing(false);
-        } else {
+        const result = await api.processWithdrawal(user.id, amountNum);
+        
+        if (result.success) {
           set(state => ({
-            user: state.user ? { ...state.user, balance: state.user.balance - amountNum } : null,
+            user: state.user ? { ...state.user, balance: result.newBalance! } : null,
             currentState: "withdraw-complete",
             inputType: "none",
             currentInput: "",
             isProcessing: false,
+            error: null,
           }));
+        } else {
+          store.setError(result.error || "Transaction failed");
         }
       } else if (currentState === "deposit-amount") {
-        set(state => ({
-          user: state.user ? { ...state.user, balance: state.user.balance + amountNum } : null,
-          currentState: "deposit-complete", 
-          inputType: "none",
-          currentInput: "",
-          isProcessing: false,
-        }));
+        const result = await api.processDeposit(user.id, amountNum);
+        
+        if (result.success) {
+          set(state => ({
+            user: state.user ? { ...state.user, balance: result.newBalance! } : null,
+            currentState: "deposit-complete", 
+            inputType: "none",
+            currentInput: "",
+            isProcessing: false,
+            error: null,
+          }));
+        } else {
+          store.setError(result.error || "Transaction failed");
+        }
       }
-    }, 2000);
+    } catch (error) {
+      store.setError("Transaction failed. Please try again.");
+    }
   },
 
   reset: () => {

@@ -19,7 +19,6 @@ export default function ATM() {
     error,
     appendInput,
     clearInput,
-    transitionTo
   } = useATMStore();
   
   const { actions } = useATMActions();
@@ -45,8 +44,6 @@ export default function ATM() {
     }
   };
   
-  // Component starts in idle state - no auto-transition
-
   return (
     <div className="flex flex-col items-center space-y-4">
       {/* ATM Header */}
