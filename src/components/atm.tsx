@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import CreditCardSprites from "./credit-card-sprites";
 import ATMHeader from "./atm-header";
 import ATMScreen from "./atm-screen";
