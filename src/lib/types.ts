@@ -40,3 +40,49 @@ export const CARD_CONFIGS: Record<Exclude<CardType, null>, CardConfig> = {
     disabled: "/visa_disabled.png"
   }
 };
+
+// ATM State Machine Types
+export type ATMState = 
+  | "idle"
+  | "pin-entry"
+  | "main-menu"
+  | "balance-display"
+  | "withdraw-amount"
+  | "withdraw-processing"
+  | "withdraw-complete"
+  | "deposit-amount"
+  | "deposit-processing" 
+  | "deposit-complete"
+  | "error";
+
+export type InputType = "pin" | "amount" | "none";
+
+export interface UserAccount {
+  id: string;
+  name: string;
+  cardType: CardType;
+  balance: number;
+}
+
+export interface ATMSession {
+  user: UserAccount | null;
+  currentState: ATMState;
+  inputType: InputType;
+  currentInput: string;
+  maxInputLength: number;
+  isProcessing: boolean;
+  error: string | null;
+}
+
+export interface ScreenContent {
+  title: string;
+  message: string;
+  showInput: boolean;
+  inputPlaceholder?: string;
+}
+
+export interface ButtonConfig {
+  label: string;
+  action: () => void;
+  disabled?: boolean;
+}

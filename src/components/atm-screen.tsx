@@ -1,59 +1,130 @@
 import Image from "next/image";
-
-type Screen = "pin-entry" | "main-menu" | "balance" | "withdraw" | "deposit";
+import { ATMState, UserAccount, InputType } from "@/lib/types";
 
 interface ATMScreenProps {
-  currentScreen: Screen;
-  userName: string;
-  balance: number;
+  currentState: ATMState;
+  user: UserAccount | null;
+  currentInput: string;
+  inputType: InputType;
+  isProcessing: boolean;
+  error: string | null;
 }
 
-export default function ATMScreen({ currentScreen, userName, balance }: ATMScreenProps) {
+export default function ATMScreen({ 
+  currentState, 
+  user, 
+  currentInput, 
+  inputType, 
+  isProcessing, 
+  error 
+}: ATMScreenProps) {
   const renderScreenContent = () => {
-    switch (currentScreen) {
-      case "pin-entry":
+    if (error) {
+      return (
+        <div className="text-center">
+          <h2 className="text-sm text-red-300">Error</h2>
+          <p className="text-xs text-red-200">{error}</p>
+        </div>
+      );
+    }
+    
+    if (isProcessing) {
+      return (
+        <div className="text-center">
+          <h2 className="text-sm">Processing...</h2>
+          <div className="animate-pulse text-xs">Please wait</div>
+        </div>
+      );
+    }
+    
+    switch (currentState) {
+      case "idle":
         return (
           <div className="text-center">
             <h2 className="text-lg leading-tight">Welcome to the<br />ATM</h2>
+            <p className="text-xs mt-4">Press Enter PIN to begin</p>
+          </div>
+        );
+        
+      case "pin-entry":
+        return (
+          <div className="text-center">
+            <h2 className="text-lg leading-tight">Enter Your PIN</h2>
+            <div className="text-lg font-mono mt-4">
+              {"*".repeat(currentInput.length)}
+            </div>
+            <p className="text-xs mt-2">Use keypad below</p>
           </div>
         );
       
       case "main-menu":
         return (
           <div>
-            <h2 className="text-sm">Hi {userName}!</h2>
+            <h2 className="text-sm">Hi {user?.name || "Guest"}!</h2>
             <p className="text-sm">Please make a choice...</p>
           </div>
         );
       
-      case "balance":
+      case "balance-display":
         return (
           <div>
             <h2 className="text-sm">Account Balance</h2>
             <div className="text-center mt-4">
-              <div className="text-2xl font-bold">${balance.toFixed(2)}</div>
+              <div className="text-2xl font-bold">${user?.balance.toFixed(2) || "0.00"}</div>
             </div>
           </div>
         );
       
-      case "withdraw":
+      case "withdraw-amount":
         return (
           <div>
             <h2 className="text-sm">Withdraw Funds</h2>
-            <p className="text-sm">Current Balance: ${balance.toFixed(2)}</p>
-            <div className="text-center text-sm mt-4">
-              Select amount on keypad
+            <p className="text-sm">Current Balance: ${user?.balance.toFixed(2) || "0.00"}</p>
+            {inputType === "amount" && (
+              <div className="text-center text-lg font-mono mt-2">
+                ${currentInput || "0.00"}
+              </div>
+            )}
+            <div className="text-center text-xs mt-2">
+              Enter amount on keypad
+            </div>
+          </div>
+        );
+        
+      case "withdraw-complete":
+        return (
+          <div className="text-center">
+            <h2 className="text-sm text-green-300">Transaction Complete</h2>
+            <p className="text-xs">Please take your cash</p>
+            <div className="text-xs mt-2">
+              New balance: ${user?.balance.toFixed(2) || "0.00"}
             </div>
           </div>
         );
       
-      case "deposit":
+      case "deposit-amount":
         return (
           <div>
             <h2 className="text-sm">Deposit Funds</h2>
-            <p className="text-sm">Current Balance: ${balance.toFixed(2)}</p>
-            <div className="text-center text-sm mt-4">
-              Insert bills or checks
+            <p className="text-sm">Current Balance: ${user?.balance.toFixed(2) || "0.00"}</p>
+            {inputType === "amount" && (
+              <div className="text-center text-lg font-mono mt-2">
+                ${currentInput || "0.00"}
+              </div>
+            )}
+            <div className="text-center text-xs mt-2">
+              Enter amount on keypad
+            </div>
+          </div>
+        );
+        
+      case "deposit-complete":
+        return (
+          <div className="text-center">
+            <h2 className="text-sm text-green-300">Deposit Complete</h2>
+            <p className="text-xs">Thank you for your deposit</p>
+            <div className="text-xs mt-2">
+              New balance: ${user?.balance.toFixed(2) || "0.00"}
             </div>
           </div>
         );

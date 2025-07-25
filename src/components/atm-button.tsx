@@ -18,10 +18,10 @@ export default function ATMButton({ position, label, onClick, disabled = false }
       {/* Label absolutely positioned into the screen area - positioned for lower half */}
       {label && (
         <div 
-          className={`absolute text-sm text-white font-mono whitespace-nowrap
+          className={`absolute text-sm text-white font-mono whitespace-nowrap z-10
             ${position === "left" 
-              ? "left-full ml-6" // More distance for larger layout
-              : "right-full mr-6" // More distance for larger layout
+              ? "left-full ml-6" // Position to the right of left buttons (into screen)
+              : "right-full mr-6" // Position to the left of right buttons (into screen)
             }`}
           style={{
             top: "50%",

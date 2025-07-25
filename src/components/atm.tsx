@@ -4,12 +4,48 @@ import CreditCardSprites from "./credit-card-sprites";
 import ATMHeader from "./atm-header";
 import ATMScreen from "./atm-screen";
 import ATMButton from "./atm-button";
-import { useATMState } from "@/hooks/use-atm-state";
+import Numpad from "./numpad";
+import { useATMStore } from "@/store/atm-store";
+import { useATMActions } from "@/hooks/use-atm-actions";
 import { useATMButtons } from "@/hooks/use-atm-buttons";
 
 export default function ATM() {
-  const atmState = useATMState();
-  const { leftButtons, rightButtons } = useATMButtons(atmState);
+  const {
+    user,
+    currentState,
+    inputType,
+    currentInput,
+    isProcessing,
+    error,
+    appendInput,
+    clearInput,
+    transitionTo
+  } = useATMStore();
+  
+  const { actions } = useATMActions();
+  
+  const { leftButtons, rightButtons } = useATMButtons({
+    currentState,
+    actions
+  });
+  
+  const handleNumpadDigit = (digit: string) => {
+    appendInput(digit);
+  };
+  
+  const handleNumpadClear = () => {
+    clearInput();
+  };
+  
+  const handleNumpadEnter = () => {
+    if (currentState === "pin-entry") {
+      actions.enterPin();
+    } else if (currentState === "withdraw-amount" || currentState === "deposit-amount") {
+      actions.processAmount();
+    }
+  };
+  
+  // Component starts in idle state - no auto-transition
 
   return (
     <div className="flex flex-col items-center space-y-4">
@@ -20,7 +56,7 @@ export default function ATM() {
       <div className="relative bg-gray-200 w-[540px] h-[700px] shadow-2xl">
         {/* Credit Card Sprites */}
         <div className="px-6 pt-3 pb-6">
-          <CreditCardSprites selectedCard={atmState.selectedCard} />
+          <CreditCardSprites selectedCard={user?.cardType || null} />
         </div>
 
         {/* Button/Screen Section */}
@@ -46,9 +82,12 @@ export default function ATM() {
 
             {/* Screen */}
             <ATMScreen 
-              currentScreen={atmState.currentScreen}
-              userName={atmState.userName}
-              balance={atmState.balance}
+              currentState={currentState}
+              user={user}
+              currentInput={currentInput}
+              inputType={inputType}
+              isProcessing={isProcessing}
+              error={error}
             />
 
             {/* Right Buttons Column */}
@@ -75,6 +114,16 @@ export default function ATM() {
         <div className="absolute bottom-4 right-8 text-sm text-gray-600 font-mono">
           SYSTEMS
         </div>
+        
+        {/* Numpad - only show when input is needed */}
+        {inputType !== "none" && (
+          <Numpad
+            onDigitPress={handleNumpadDigit}
+            onClear={handleNumpadClear}
+            onEnter={handleNumpadEnter}
+            disabled={isProcessing}
+          />
+        )}
       </div>
     </div>
   );
