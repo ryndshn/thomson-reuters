@@ -3,11 +3,11 @@
 import CreditCardSprites from "./credit-card-sprites";
 import ATMHeader from "./atm-header";
 import ATMScreen from "./atm-screen";
-import ATMButton from "./atm-button";
 import Numpad from "./numpad";
 import { useATMStore } from "@/store/atm-store";
 import { useATMActions } from "@/hooks/use-atm-actions";
 import { useATMButtons } from "@/hooks/use-atm-buttons";
+import { ATMButtonColumn } from "./atm-button-column";
 
 export default function ATM() {
   const {
@@ -23,10 +23,7 @@ export default function ATM() {
   
   const { actions } = useATMActions();
   
-  const { leftButtons, rightButtons } = useATMButtons({
-    currentState,
-    actions
-  });
+  const { leftButtons, rightButtons } = useATMButtons();
   
   const handleNumpadDigit = (digit: string) => {
     appendInput(digit);
@@ -60,20 +57,9 @@ export default function ATM() {
         <div className="px-4">
           <div className="grid grid-cols-[80px_1fr_80px] h-[320px] gap-3">
             {/* Left Buttons Column */}
-            <div className="flex flex-col justify-end pb-4">
+            <div className="flex flex-col justify-end pb-4 items-center">
               <div className="space-y-2">
-                {Array.from({ length: 4 }).map((_, index) => {
-                  const button = leftButtons[index];
-                  return (
-                    <ATMButton
-                      key={`left-${index}`}
-                      position="left"
-                      label={button?.label}
-                      onClick={button?.action}
-                      disabled={!button}
-                    />
-                  );
-                })}
+                <ATMButtonColumn buttons={leftButtons} position="left" />
               </div>
             </div>
 
@@ -88,20 +74,9 @@ export default function ATM() {
             />
 
             {/* Right Buttons Column */}
-            <div className="flex flex-col justify-end pb-4">
+            <div className="flex flex-col justify-end pb-4 items-center">
               <div className="space-y-2">
-                {Array.from({ length: 4 }).map((_, index) => {
-                  const button = rightButtons[index];
-                  return (
-                    <ATMButton
-                      key={`right-${index}`}
-                      position="right"
-                      label={button?.label}
-                      onClick={button?.action}
-                      disabled={!button}
-                    />
-                  );
-                })}
+                <ATMButtonColumn buttons={rightButtons} position="right" />
               </div>
             </div>
           </div>

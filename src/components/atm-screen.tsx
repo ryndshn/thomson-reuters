@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { ATMState, UserAccount, InputType } from "@/lib/types";
+import { convertCentsToCurrency } from "@/lib/converters";
 
 interface ATMScreenProps {
   currentState: ATMState;
@@ -70,7 +71,7 @@ export default function ATMScreen({
           <div>
             <h2 className="text-sm">Account Balance</h2>
             <div className="text-center mt-4">
-              <div className="text-2xl font-bold">${user?.balance.toFixed(2) || "0.00"}</div>
+              <div className="text-2xl font-bold">${convertCentsToCurrency(user?.balance)}</div>
             </div>
           </div>
         );
@@ -79,10 +80,10 @@ export default function ATMScreen({
         return (
           <div>
             <h2 className="text-sm">Withdraw Funds</h2>
-            <p className="text-sm">Current Balance: ${user?.balance.toFixed(2) || "0.00"}</p>
+            <p className="text-sm">Current Balance: ${convertCentsToCurrency(user?.balance)}</p>
             {inputType === "amount" && (
               <div className="text-center text-lg font-mono mt-2">
-                ${currentInput || "0.00"}
+                ${convertCentsToCurrency(currentInput)}
               </div>
             )}
             <div className="text-center text-xs mt-2">
@@ -97,7 +98,7 @@ export default function ATMScreen({
             <h2 className="text-sm text-green-300">Transaction Complete</h2>
             <p className="text-xs">Please take your cash</p>
             <div className="text-xs mt-2">
-              New balance: ${user?.balance.toFixed(2) || "0.00"}
+              New balance: ${convertCentsToCurrency(user?.balance)}
             </div>
           </div>
         );
@@ -106,10 +107,10 @@ export default function ATMScreen({
         return (
           <div>
             <h2 className="text-sm">Deposit Funds</h2>
-            <p className="text-sm">Current Balance: ${user?.balance.toFixed(2) || "0.00"}</p>
+            <p className="text-sm">Current Balance: ${convertCentsToCurrency(user?.balance)}</p>
             {inputType === "amount" && (
               <div className="text-center text-lg font-mono mt-2">
-                ${currentInput || "0.00"}
+                ${convertCentsToCurrency(currentInput)}
               </div>
             )}
             <div className="text-center text-xs mt-2">
@@ -124,7 +125,7 @@ export default function ATMScreen({
             <h2 className="text-sm text-green-300">Deposit Complete</h2>
             <p className="text-xs">Thank you for your deposit</p>
             <div className="text-xs mt-2">
-              New balance: ${user?.balance.toFixed(2) || "0.00"}
+              New balance: ${convertCentsToCurrency(user?.balance)}
             </div>
           </div>
         );
@@ -147,7 +148,7 @@ export default function ATMScreen({
       <div className="flex-1"></div>
       
       {/* Sticker Graffiti overlapping bottom-left of screen */}
-      <div className="absolute -bottom-10 -left-10 z-10">
+      <div className="absolute -bottom-20 -left-10 z-10">
         <Image
           src="/sticker_graf.png"
           alt="Sticker Graffiti"

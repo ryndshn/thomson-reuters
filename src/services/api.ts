@@ -5,12 +5,12 @@ const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 // Initial user data - gets loaded into localStorage on first run
 const INITIAL_USERS: UserAccount[] = [
-  { id: "1", name: "Peter Parker", cardType: "mastercard", balance: 2500.00 },
-  { id: "2", name: "Mary Jane", cardType: "visa", balance: 1850.50 },
-  { id: "3", name: "Spider-Man", cardType: "star", balance: 10000.00 },
-  { id: "4", name: "Ben Parker", cardType: "pulse", balance: 750.25 },
-  { id: "5", name: "May Parker", cardType: "maestro", balance: 3200.00 },
-  { id: "6", name: "Gwen Stacy", cardType: "plus", balance: 925.75 },
+  { id: "1", name: "Peter Parker", cardType: "mastercard", balance: 250000 },
+  { id: "2", name: "Mary Jane", cardType: "visa", balance: 185050 },
+  { id: "3", name: "Spider-Man", cardType: "star", balance: 1000000 },
+  { id: "4", name: "Ben Parker", cardType: "pulse", balance: 75025 },
+  { id: "5", name: "May Parker", cardType: "maestro", balance: 320000 },
+  { id: "6", name: "Gwen Stacy", cardType: "plus", balance: 92575 },
 ];
 
 // PIN to user ID mapping
@@ -36,18 +36,26 @@ const initializeStorage = () => {
 };
 
 // Get users from localStorage
-const getUsers = (): UserAccount[] => {
-  if (typeof window === 'undefined') return INITIAL_USERS; // SSR safety
-  
+// nit: getUserById and do the filtering once here. You likely wouldn't have a getUsers endpoint for an ATM
+const getUserById = (id: string): UserAccount | null => {  
   const data = localStorage.getItem(STORAGE_KEY);
-  return data ? JSON.parse(data) : INITIAL_USERS;
+  const users: UserAccount[] = data ? JSON.parse(data) : [];
+  const user = users.find(u => u.id === id);
+  return user || null;
 };
 
 // Save users to localStorage
-const saveUsers = (users: UserAccount[]) => {
-  if (typeof window === 'undefined') return; // SSR safety
-  
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
+// do this by id too
+const saveUserById = (id: string, balance: number) => {
+    const data = localStorage.getItem(STORAGE_KEY);
+    const users: UserAccount[] = data ? JSON.parse(data) : [];
+    const userIndex = users.findIndex(u => u.id === id);
+    if (userIndex === -1) {
+      throw new Error(`User with id ${id} not found`);
+    }
+    users[userIndex].balance = balance;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
+    return users[userIndex];
 };
 
 // API methods that simulate server requests
@@ -57,76 +65,50 @@ export const api = {
     initializeStorage();
   },
 
-  // Authenticate user by PIN
   authenticateUser: async (pin: string): Promise<UserAccount | null> => {
     await delay(800); // Simulate network delay
     
     const userId = PIN_TO_USER_ID[pin];
     if (!userId) return null;
     
-    const users = getUsers();
-    const user = users.find(u => u.id === userId);
-    return user || null;
+    return getUserById(userId);
   },
 
-  // Get user balance
   getBalance: async (userId: string): Promise<number | null> => {
-    await delay(500);
+    await delay(500); // Simulate network delay
     
-    const users = getUsers();
-    const user = users.find(u => u.id === userId);
+    const user = getUserById(userId);
     return user?.balance ?? null;
   },
 
-  // Process withdrawal
   processWithdrawal: async (userId: string, amount: number): Promise<{ success: boolean; newBalance?: number; error?: string }> => {
     await delay(2000); // Longer delay for transaction processing
     
-    const users = getUsers();
-    const userIndex = users.findIndex(u => u.id === userId);
-    
-    if (userIndex === -1) {
+    const user = getUserById(userId);
+    if (!user) {
       return { success: false, error: "User not found" };
-    }
-    
-    const user = users[userIndex];
-    if (user.balance < amount) {
+    } else if (user.balance < amount) {
       return { success: false, error: "Insufficient funds" };
     }
     
-    // Update balance
-    users[userIndex] = { ...user, balance: user.balance - amount };
-    saveUsers(users);
-    
-    return { success: true, newBalance: users[userIndex].balance };
+    const updatedUser = saveUserById(userId, user.balance - amount);
+    return { success: true, newBalance: updatedUser.balance };
   },
 
-  // Process deposit
   processDeposit: async (userId: string, amount: number): Promise<{ success: boolean; newBalance?: number; error?: string }> => {
     await delay(2000); // Longer delay for transaction processing
     
-    const users = getUsers();
-    const userIndex = users.findIndex(u => u.id === userId);
-    
-    if (userIndex === -1) {
+    const user = getUserById(userId);
+    if (!user) {
       return { success: false, error: "User not found" };
     }
-    
-    const user = users[userIndex];
-    
-    // Update balance
-    users[userIndex] = { ...user, balance: user.balance + amount };
-    saveUsers(users);
-    
-    return { success: true, newBalance: users[userIndex].balance };
+
+    const updatedUser = saveUserById(userId, user.balance + amount);
+    return { success: true, newBalance: updatedUser.balance };
   },
 
-  // Get updated user data
   getUser: async (userId: string): Promise<UserAccount | null> => {
     await delay(300);
-    
-    const users = getUsers();
-    const user = users.find(u => u.id === userId);
-    return user || null;
+    return getUserById(userId);
   }
 };

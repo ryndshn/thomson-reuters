@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { ATMState, ATMSession, InputType } from '@/lib/types';
+import { ATMState, ATMSession, InputType, ButtonConfig } from '@/lib/types';
 import { api } from '@/services/api';
 
 interface ATMStore extends ATMSession {
@@ -96,8 +96,8 @@ export const useATMStore = create<ATMStore>((set, get) => ({
         store.setError("Invalid PIN. Please try again.");
         store.clearInput();
       }
-    } catch (error) {
-      store.setError(`Authentication failed. Please try again. ${error}`);
+    } catch {
+      store.setError("Authentication failed. Please try again.");
       store.clearInput();
     }
   },
@@ -164,8 +164,8 @@ export const useATMStore = create<ATMStore>((set, get) => ({
           store.setError(result.error || "Transaction failed");
         }
       }
-    } catch (error) {
-      store.setError(`Transaction failed. Please try again. ${error}`);
+    } catch {
+      store.setError("Transaction failed. Please try again.");
     }
   },
 

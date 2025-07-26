@@ -19,8 +19,8 @@ export default function ATMButton({ position, label, onClick, disabled = false }
         <div 
           className={`absolute text-sm text-white font-mono whitespace-nowrap z-10
             ${position === "left" 
-              ? "left-full ml-6" // Position to the right of left buttons (into screen)
-              : "right-full mr-6" // Position to the left of right buttons (into screen)
+              ? "left-full ml-8" // Position to the right of left buttons (into screen)
+              : "right-full mr-8" // Position to the left of right buttons (into screen)
             }`}
           style={{
             top: "50%",

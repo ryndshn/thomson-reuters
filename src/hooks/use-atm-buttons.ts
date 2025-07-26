@@ -1,51 +1,47 @@
-import { ATMState } from "@/lib/types";
-import { ATMActions } from "./use-atm-actions";
+import { useATMStore } from "@/store/atm-store";
+import { useATMActions } from "./use-atm-actions";
 
-interface ButtonConfig {
+export interface ButtonConfig {
   label: string;
   action: () => void;
 }
 
-interface UseATMButtonsProps {
-  currentState: ATMState;
-  actions: ATMActions;
-}
+const MAX_BUTTONS_PER_SIDE = 4;
 
-export function useATMButtons({
-  currentState,
-  actions,
-}: UseATMButtonsProps) {
+export function useATMButtons() {
+  const { currentState } = useATMStore();
+  const { actions } = useATMActions();
+  const topPadButtons = (buttons: (ButtonConfig | null)[]) => {
+    const paddedButtons = [...buttons];
+    while (paddedButtons.length < MAX_BUTTONS_PER_SIDE) {
+      paddedButtons.unshift(null);
+    }
+    return paddedButtons;
+  }
   
-  const getLeftButtons = (): (ButtonConfig | null)[] => {
-    const buttons = Array(4).fill(null);
-    
+    let leftButtons: (ButtonConfig | null)[] = [];
     if (currentState === "main-menu") {
-      buttons[0] = { label: "Withdraw", action: actions.withdraw };
-      buttons[1] = { label: "Deposit", action: actions.deposit };
+      leftButtons = [
+        { label: "Withdraw", action: actions.withdraw },
+        { label: "Deposit", action: actions.deposit },
+      ];
     }
     
-    return buttons;
-  };
 
-  const getRightButtons = (): (ButtonConfig | null)[] => {
-    const buttons = Array(4).fill(null);
-    
+    const rightButtons: (ButtonConfig | null)[] = [];
     // Always show Exit button on top right (except in idle state)
     if (currentState !== "idle") {
-      buttons[0] = { label: "Exit", action: actions.exit };
+      rightButtons.push({ label: "Exit", action: actions.exit });
     }
     
     if (currentState === "idle") {
-      buttons[3] = { label: "Enter PIN", action: actions.startPinEntry };
+      rightButtons.push({ label: "Enter PIN", action: actions.startPinEntry });
     } else if (currentState === "main-menu") {
-      buttons[1] = { label: "Balance", action: actions.balance };
+      rightButtons.push({ label: "Balance", action: actions.balance });
     }
-    
-    return buttons;
-  };
 
   return {
-    leftButtons: getLeftButtons(),
-    rightButtons: getRightButtons(),
+    leftButtons: topPadButtons(leftButtons),
+    rightButtons: topPadButtons(rightButtons),
   };
 }

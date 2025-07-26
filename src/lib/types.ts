@@ -61,7 +61,7 @@ export interface UserAccount {
   id: string;
   name: string;
   cardType: CardType;
-  balance: number;
+  balance: number; // in cents
 }
 
 export interface ATMSession {
@@ -84,5 +84,4 @@ export interface ScreenContent {
 export interface ButtonConfig {
   label: string;
   action: () => void;
-  disabled?: boolean;
 }
