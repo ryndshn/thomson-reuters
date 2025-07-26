@@ -2,7 +2,11 @@
 
 A functional ATM machine web application built with React, TypeScript, and Next.js that simulates real banking interactions.
 
+## Demo
+The app is deployed here: https://thomson-reuters-production.up.railway.app/
+
 ## Setup & Run
+You'll need node, npm, and pnpm to run this app.
 
 ```bash
 # Install dependencies
