@@ -10,7 +10,6 @@ export function useATMActions() {
     processTransaction,
     transitionTo,
     reset,
-    setError
   } = useATMStore();
 
   const actions = {
