@@ -21,8 +21,6 @@ export function useATMActions() {
     enterPin: () => {
       if (currentInput.length === 4) {
         authenticateUser(currentInput);
-      } else {
-        setError("Invalid PIN");
       }
     },
     
