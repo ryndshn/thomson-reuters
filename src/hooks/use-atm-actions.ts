@@ -1,7 +1,5 @@
 import { useATMStore } from '@/store/atm-store';
 
-export type ATMActions = ReturnType<typeof useATMActions>["actions"];
-
 export function useATMActions() {
   const {
     currentState,
@@ -11,7 +9,8 @@ export function useATMActions() {
     selectMainMenuOption,
     processTransaction,
     transitionTo,
-    reset
+    reset,
+    setError
   } = useATMStore();
 
   const actions = {
@@ -22,6 +21,8 @@ export function useATMActions() {
     enterPin: () => {
       if (currentInput.length === 4) {
         authenticateUser(currentInput);
+      } else {
+        setError("Invalid PIN");
       }
     },
     

@@ -1,10 +1,9 @@
 import { create } from 'zustand';
-import { ATMState, ATMSession, InputType, ButtonConfig } from '@/lib/types';
+import { ATMState, ATMSession, InputType } from '@/lib/types';
 import { api } from '@/services/api';
 
 interface ATMStore extends ATMSession {
   // Actions
-  setCurrentInput: (input: string) => void;
   appendInput: (digit: string) => void;
   clearInput: () => void;
   setError: (error: string | null) => void;
@@ -13,7 +12,7 @@ interface ATMStore extends ATMSession {
   // State transitions
   transitionTo: (state: ATMState, inputType?: InputType, maxLength?: number) => void;
   authenticateUser: (pin: string) => void;
-  selectMainMenuOption: (option: string) => void;
+  selectMainMenuOption: (option: "balance" | "withdraw" | "deposit") => void;
   processTransaction: (amount: string) => void;
   reset: () => void;
 }
@@ -36,13 +35,6 @@ const initialState: ATMSession = {
 export const useATMStore = create<ATMStore>((set, get) => ({
   ...initialState,
 
-  setCurrentInput: (input: string) => {
-    const { maxInputLength } = get();
-    if (input.length <= maxInputLength) {
-      set({ currentInput: input, error: null });
-    }
-  },
-
   appendInput: (digit: string) => {
     const { currentInput, maxInputLength } = get();
     if (currentInput.length < maxInputLength) {
@@ -54,7 +46,7 @@ export const useATMStore = create<ATMStore>((set, get) => ({
   },
 
   clearInput: () => {
-    set({ currentInput: "", error: null });
+    set({ currentInput: "" });
   },
 
   setError: (error: string | null) => {
@@ -102,7 +94,7 @@ export const useATMStore = create<ATMStore>((set, get) => ({
     }
   },
 
-  selectMainMenuOption: (option: string) => {
+  selectMainMenuOption: (option: "balance" | "withdraw" | "deposit") => {
     const store = get();
     
     switch (option) {

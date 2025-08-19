@@ -37,7 +37,7 @@ const initializeStorage = () => {
 
 // Get users from localStorage
 // nit: getUserById and do the filtering once here. You likely wouldn't have a getUsers endpoint for an ATM
-const getUserById = (id: string): UserAccount | null => {  
+const getUserById = (id: string): UserAccount | null => {
   const data = localStorage.getItem(STORAGE_KEY);
   const users: UserAccount[] = data ? JSON.parse(data) : [];
   const user = users.find(u => u.id === id);
@@ -105,10 +105,5 @@ export const api = {
 
     const updatedUser = saveUserById(userId, user.balance + amount);
     return { success: true, newBalance: updatedUser.balance };
-  },
-
-  getUser: async (userId: string): Promise<UserAccount | null> => {
-    await delay(300);
-    return getUserById(userId);
   }
 };
