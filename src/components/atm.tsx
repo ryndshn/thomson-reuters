@@ -14,9 +14,7 @@ export default function ATM() {
     user,
     currentState,
     inputType,
-    currentInput,
     isProcessing,
-    error,
     appendInput,
     clearInput,
   } = useATMStore();
@@ -64,14 +62,7 @@ export default function ATM() {
             </div>
 
             {/* Screen */}
-            <ATMScreen 
-              currentState={currentState}
-              user={user}
-              currentInput={currentInput}
-              inputType={inputType}
-              isProcessing={isProcessing}
-              error={error}
-            />
+            <ATMScreen />
 
             {/* Right Buttons Column */}
             <div className="flex flex-col justify-end pb-4 items-center">

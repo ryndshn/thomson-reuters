@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { ATMState, UserAccount, InputType } from "@/lib/types";
 import { convertCentsToCurrency } from "@/lib/converters";
+import { useATMStore } from "@/store/atm-store";
 
 interface ATMScreenProps {
   currentState: ATMState;
@@ -11,14 +12,9 @@ interface ATMScreenProps {
   error: string | null;
 }
 
-const ScreenContent = ({ 
-  currentState, 
-  user, 
-  currentInput, 
-  inputType, 
-  isProcessing, 
-  error 
-}: ATMScreenProps) => {
+const ScreenContent = () => {
+  const { currentState, user, currentInput, inputType, isProcessing, error } = useATMStore();
+
   if (error) {
     return (
       <div className="text-center">
@@ -135,27 +131,13 @@ const ScreenContent = ({
 }
 
 
-export default function ATMScreen({ 
-  currentState, 
-  user, 
-  currentInput, 
-  inputType, 
-  isProcessing, 
-  error 
-}: ATMScreenProps) {
+export default function ATMScreen() {
   return (
     <div className="bg-blue-400 text-white font-mono flex flex-col relative">
       {/* Main Content Area - Upper 2/3, top-aligned */}
       <div className="h-48 flex items-start justify-center p-6 pt-8 text-center">
         <div className="text-lg">
-          <ScreenContent 
-            currentState={currentState} 
-            user={user} 
-            currentInput={currentInput} 
-            inputType={inputType} 
-            isProcessing={isProcessing} 
-            error={error} 
-          />
+          <ScreenContent />
         </div>
       </div>
       
