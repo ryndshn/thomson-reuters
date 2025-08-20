@@ -50,11 +50,11 @@ export const useATMStore = create<ATMStore>((set, get) => ({
   },
 
   setError: (error: string | null) => {
-    set({ error, isProcessing: false });
+    set({ error });
   },
 
-  setProcessing: (processing: boolean) => {
-    set({ isProcessing: processing });
+  setProcessing: (isProcessing: boolean) => {
+    set({ isProcessing });
   },
 
   transitionTo: (state: ATMState, inputType: InputType = "none", maxLength: number = 0) => {
@@ -92,6 +92,8 @@ export const useATMStore = create<ATMStore>((set, get) => ({
       store.setError("Authentication failed. Please try again.");
       store.clearInput();
     }
+
+    store.setProcessing(false);
   },
 
   selectMainMenuOption: (option: "balance" | "withdraw" | "deposit") => {
@@ -159,6 +161,8 @@ export const useATMStore = create<ATMStore>((set, get) => ({
     } catch {
       store.setError("Transaction failed. Please try again.");
     }
+
+    store.setProcessing(false);
   },
 
   reset: () => {
