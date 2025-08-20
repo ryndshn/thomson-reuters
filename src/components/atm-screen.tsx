@@ -126,9 +126,7 @@ export default function ATMScreen() {
     <div className="bg-blue-400 text-white font-mono flex flex-col relative">
       {/* Main Content Area - Upper 2/3, top-aligned */}
       <div className="h-48 flex items-start justify-center p-6 pt-8 text-center">
-        <div className="text-lg">
-          <ScreenContent />
-        </div>
+        <ScreenContent />
       </div>
       
       {/* Button label area - Lower 1/3 */}
