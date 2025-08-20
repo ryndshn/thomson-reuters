@@ -3,17 +3,19 @@ import { ATMState, ATMSession, InputType } from '@/lib/types';
 import { api } from '@/services/api';
 
 interface ATMStore extends ATMSession {
-  // Actions
+  // Numpad input handling
   appendInput: (digit: string) => void;
   clearInput: () => void;
+  
+  // UI state
   setError: (error: string | null) => void;
   setProcessing: (processing: boolean) => void;
   
-  // State transitions
+  // Business operations
   transitionTo: (state: ATMState, inputType?: InputType, maxLength?: number) => void;
-  authenticateUser: (pin: string) => void;
+  authenticateUser: (pin: string) => Promise<void>;
   selectMainMenuOption: (option: "balance" | "withdraw" | "deposit") => void;
-  processTransaction: (amount: string) => void;
+  processTransaction: (amount: string) => Promise<void>;
   reset: () => void;
 }
 

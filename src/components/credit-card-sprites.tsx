@@ -1,4 +1,4 @@
-import Image from "next/image";
+/* eslint-disable @next/next/no-img-element */
 import { CardType, CARD_TYPES, CARD_CONFIGS } from "@/lib/types";
 
 interface CreditCardSpritesProps {
@@ -15,12 +15,10 @@ export default function CreditCardSprites({ selectedCard }: CreditCardSpritesPro
         
         return (
           <div key={cardType} className="w-[50px] h-[25px] flex items-center justify-center">
-            <Image
+            <img
               src={imageSrc}
               alt={`${cardConfig.name} card`}
-              width={40}
-              height={25}
-              className="object-contain"
+              className="w-[40px] h-[25px]"
             />
           </div>
         );

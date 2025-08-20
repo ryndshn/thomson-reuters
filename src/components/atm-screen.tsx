@@ -1,4 +1,4 @@
-import Image from "next/image";
+/* eslint-disable @next/next/no-img-element */
 import { ATMState, UserAccount, InputType } from "@/lib/types";
 import { convertCentsToCurrency } from "@/lib/converters";
 
@@ -164,22 +164,18 @@ export default function ATMScreen({
       
       {/* Sticker Graffiti overlapping bottom-left of screen */}
       <div className="absolute -bottom-20 -left-10 z-10">
-        <Image
+        <img
           src="/sticker_graf.png"
           alt="Sticker Graffiti"
-          width={150}
-          height={85}
+          className="w-[150px] h-[85px]"
         />
       </div>
       
       {/* SYSTEMS image - positioned underneath and right-aligned to screen */}
       <div className="absolute -bottom-5 right-2">
-        <Image
+        <img
           src="/systems.png"
           alt="Systems"
-          width={70}
-          height={30}
-          className="object-contain"
         />
       </div>
     </div>
