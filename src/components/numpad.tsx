@@ -8,7 +8,7 @@ interface NumpadProps {
 }
 
 export default function Numpad({ onDigitPress, onClear, onEnter, disabled = false }: NumpadProps) {
-  const digits = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
+  const digits = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
   return (
     <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-gray-300 p-4 rounded-lg shadow-lg">
