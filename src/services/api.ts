@@ -74,13 +74,6 @@ export const api = {
     return getUserById(userId);
   },
 
-  getBalance: async (userId: string): Promise<number | null> => {
-    await delay(500); // Simulate network delay
-    
-    const user = getUserById(userId);
-    return user?.balance ?? null;
-  },
-
   processWithdrawal: async (userId: string, amount: number): Promise<{ success: boolean; newBalance?: number; error?: string }> => {
     await delay(2000); // Longer delay for transaction processing
     
