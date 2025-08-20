@@ -1,16 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
-import { ATMState, UserAccount, InputType } from "@/lib/types";
 import { convertCentsToCurrency } from "@/lib/converters";
 import { useATMStore } from "@/store/atm-store";
-
-interface ATMScreenProps {
-  currentState: ATMState;
-  user: UserAccount | null;
-  currentInput: string;
-  inputType: InputType;
-  isProcessing: boolean;
-  error: string | null;
-}
 
 const ScreenContent = () => {
   const { currentState, user, currentInput, inputType, isProcessing, error } = useATMStore();
