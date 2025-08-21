@@ -2,12 +2,10 @@
 
 import CreditCardSprites from "./credit-card-sprites";
 import ATMHeader from "./atm-header";
-import ATMScreen from "./atm-screen";
+import { ScreenContent } from "./atm-screen";
 import Numpad from "./numpad";
 import { useATMStore } from "@/store/atm-store";
 import { useATMActions } from "@/hooks/use-atm-actions";
-import { useATMButtons } from "@/hooks/use-atm-buttons";
-import { ATMButtonColumn } from "./atm-button-column";
 
 export default function ATM() {
   const {
@@ -20,9 +18,7 @@ export default function ATM() {
   } = useATMStore();
   
   const { actions } = useATMActions();
-  
-  const { leftButtons, rightButtons } = useATMButtons();
-  
+    
   const handleNumpadDigit = (digit: string) => {
     appendInput(digit);
   };
@@ -51,29 +47,7 @@ export default function ATM() {
           <CreditCardSprites selectedCard={user?.cardType || null} />
         </div>
 
-        {/* Button/Screen Section */}
-        <div className="px-4">
-          <div className="grid grid-cols-[80px_1fr_80px] h-[320px] gap-3">
-            {/* Left Buttons Column */}
-            <div className="flex flex-col justify-end pb-4 items-center">
-              <div className="space-y-2">
-                <ATMButtonColumn buttons={leftButtons} position="left" />
-              </div>
-            </div>
-
-            {/* Screen */}
-            <ATMScreen />
-
-            {/* Right Buttons Column */}
-            <div className="flex flex-col justify-end pb-4 items-center">
-              <div className="space-y-2">
-                <ATMButtonColumn buttons={rightButtons} position="right" />
-              </div>
-            </div>
-          </div>
-        </div>
-
-
+        <ScreenContent />
         
         {/* Numpad - only show when input is needed */}
         {inputType !== "none" && (
