@@ -2,7 +2,7 @@
 
 import CreditCardSprites from "./credit-card-sprites";
 import ATMHeader from "./atm-header";
-import { ScreenContent } from "./atm-screen";
+import { ATMScreen } from "./atm-screen";
 import Numpad from "./numpad";
 import { useATMStore } from "@/store/atm-store";
 import { useATMActions } from "@/hooks/use-atm-actions";
@@ -47,7 +47,7 @@ export default function ATM() {
           <CreditCardSprites selectedCard={user?.cardType || null} />
         </div>
 
-        <ScreenContent />
+        <ATMScreen />
         
         {/* Numpad - only show when input is needed */}
         {inputType !== "none" && (

@@ -1,5 +1,5 @@
 import { useATMActions } from "@/hooks/use-atm-actions";
-import { BaseScreen} from "../atm-screen";
+import { BaseScreen} from "./base-screen";
 
 export const MainMenuScreen = () => {
   const { actions, user } = useATMActions();

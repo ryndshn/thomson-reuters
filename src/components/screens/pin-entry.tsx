@@ -1,5 +1,5 @@
 import { useATMActions } from "@/hooks/use-atm-actions";
-import { BaseScreen } from "../atm-screen";
+import { BaseScreen } from "./base-screen";
 import { useATMStore } from "@/store/atm-store";
 
 export const PinEntryScreen = () => {
